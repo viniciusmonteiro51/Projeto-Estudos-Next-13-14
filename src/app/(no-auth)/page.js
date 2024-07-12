@@ -7,23 +7,23 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
-// Definir o esquema de validação usando Zod
-const formSchema = z.object({
-  email: z.string().email({ message: "Email inválido" }),
-  senha: z.string()
-    .min(8, { message: "A senha deve ter pelo menos 8 caracteres" })
-    .regex(/[A-Z]/, { message: "A senha deve conter pelo menos uma letra maiúscula" })
-    .regex(/[a-z]/, { message: "A senha deve conter pelo menos uma letra minúscula" })
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "A senha deve conter pelo menos um caractere especial (!@#$%^&*(),.?\":{}|<>)" }),
-});
+export default function LoginPage() {
 
-// Definir a função de submissão do formulário
-const onSubmit = (data) => {
-  console.log("Form data:", data);
-};
+  let router = useRouter();
+  // Definir o esquema de validação usando Zod
+  const formSchema = z.object({
+    email: z.string().email({ message: "Email inválido" }),
+    senha: z.string()
+      .min(8, { message: "A senha deve ter pelo menos 8 caracteres" })
+      .regex(/[A-Z]/, { message: "A senha deve conter pelo menos uma letra maiúscula" })
+      .regex(/[a-z]/, { message: "A senha deve conter pelo menos uma letra minúscula" })
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "A senha deve conter pelo menos um caractere especial (!@#$%^&*(),.?\":{}|<>)" }),
+  });
 
-export default function Home() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,6 +32,35 @@ export default function Home() {
     },
   });
 
+  // Definir a função de submissão do formulário
+  const onSubmit = (data) => {
+    console.log("Form data:", data);
+  };
+  async function login(data) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const response = await signIn("credentials", {
+      email: data.email,
+      senha: data.senha,
+      redirect: false
+    })
+
+    if(response.ok && !response.error) {
+      router.replace("/inicio");
+    } else {
+      switch (response.error) {
+        case "fetch failed":
+          toast.error("Servidor fora do ar, contate o Administrador do sistema!");
+          break;
+        case "CredentialsSignin":
+          toast.error("Credencial ou senha incorreta!");
+          break;
+        default:
+          toast.error("Erro ao capturar mensagem do servidor, contate o Administrador do sistema!");
+      }
+    }
+
+  }
   return (
     <div className="flex h-screen w-screen flex-col md:flex-row">
 
@@ -44,17 +73,20 @@ export default function Home() {
         <div className="w-4/5 bg-[#fefefe] shadow-md border rounded-md p-8 md:w-2/5">
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(login)} className="space-y-8">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel htmlFor="email">E-mail</FormLabel>
                     <FormControl>
                       <Input
                         className="border-black"
-                        placeholder="exemplo@dominio.com" {...field} />
+                        placeholder="exemplo@dominio.com" 
+                        id="email" 
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -65,12 +97,13 @@ export default function Home() {
                 name="senha"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Senha</FormLabel>
+                    <FormLabel htmlFor="senha">Senha</FormLabel>
                     <FormControl>
                       <Input
                         className="border-black"
                         type="password"
                         placeholder="********"
+                        id="senha"
                         {...field}
                       />
                     </FormControl>
