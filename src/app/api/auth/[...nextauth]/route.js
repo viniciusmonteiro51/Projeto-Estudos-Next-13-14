@@ -38,7 +38,6 @@ const nextAuthOptions = {
             // Adiciona o usuário ao token JWT
             if (user) {
                 token.user = user;
-                console.log("sean 2")
                 console.log(token.user)
             }
             return token;
@@ -47,7 +46,6 @@ const nextAuthOptions = {
             // Adiciona os dados do usuário à sessão
             if (token) {
                 session.user = token.user;
-                console.log("sean")
                 console.log(session.user)
             }
             return session;
@@ -57,4 +55,4 @@ const nextAuthOptions = {
 
 const handler = NextAuth(nextAuthOptions);
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST, nextAuthOptions };
