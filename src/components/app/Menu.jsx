@@ -1,18 +1,21 @@
 "use client"
 
-import { Bell, ChevronsLeft, Home, LogOut, UserRound, Goal, CircleUserRound } from "lucide-react";
+import { Bell, ChevronsLeft, Home, LogOut, DollarSign, Goal, CreditCard, TrendingUp, HandCoins } from "lucide-react";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import Link from "next/link";
 import ButtonLink from "./ButtonLink";
-
+import Image from "next/image";
 export function Menu() {
 
   let router = useRouter();
 
   const { data: session, status } = useSession();
+
+  console.log('Session:', session); // Adicione isso
+  console.log('Status:', status); // Adicione isso
 
   const [menuClosed, setMenuClosed] = useState(false);
 
@@ -21,14 +24,17 @@ export function Menu() {
       id: 0, name: "Início", img: <Home color="white" width={menuClosed ? "21px" : "25px"} />, imgAlt: "Ícone início", link: "/inicio"
     },
     {
-      id: 1, name: "Usuários", img: <UserRound color="white" width={menuClosed ? "21px" : "25px"} />, imgAlt: "Ícone usuários", link: "/usuarios"
+      id: 1, name: "Extrato", img: <HandCoins color="white" width={menuClosed ? "21px" : "25px"} />, imgAlt: "Ícone usuários", link: "/extratos"
     },
     {
-      id: 2, name: "Contas", img: <CircleUserRound color="white" width={menuClosed ? "21px" : "25px"} />, imgAlt: "Ícone de veículos", link: "/contas"
+      id: 2, name: "Transferências", img: <TrendingUp color="white" width={menuClosed ? "21px" : "25px"} />, imgAlt: "Ícone de veículos", link: "/transferencias"
     },
     {
-      id: 3, name: "Metas", img: <Goal color="white" width={menuClosed ? "21px" : "25px"} />, imgAlt: "Ícone reservas", link: "/metas"
+      id: 3, name: "Pagamentos", img: <DollarSign color="white" width={menuClosed ? "21px" : "25px"} />, imgAlt: "Ícone reservas", link: "/pagamentos"
     },
+    {
+      id: 4, name: "Cartões", img: <CreditCard color="white" width={menuClosed ? "21px" : "25px"} />, imgAlt: "Ícone reservas", link: "/cartoes"
+    }
   ]
 
   async function deslogar() {
@@ -45,27 +51,27 @@ export function Menu() {
           <div className={`flex flex-col gap-6`}>
             <div className="flex items-center gap-3">
 
-              <img src="G.svg" alt="Logo cidades inteligentes" className={menuClosed ? "w-[38px]" : "w-[45px]"} />
+              <img src="C.svg" alt="Logo cidades inteligentes" className={menuClosed ? "w-[40px]" : "w-[40px]"} />
 
               {!menuClosed && (
                 <div className="flex flex-col">
-                  <p className="text-white text-sm whitespace-nowrap">Gerenciamento de contas</p>
-                  <p className="text-white text-sm whitespace-nowrap">Estudos</p>
+                  <Image
+                    src="/Ocean.svg"
+                    width={150}
+                    height={150}
+                    alt="Homepage Image"
+                    className="bg-white rounded-xl"
+                  />
                 </div>
               )}
             </div>
 
             <div className={`flex w-full  ${!menuClosed ? "gap-2" : "gap-4"} border-b pb-3 ${menuClosed && "flex-col"}`}>
-              <ButtonLink className={`p-0 h-[45px] justify-start flex items-center gap-2 ${!menuClosed && "bg-blue-600 rounded-l-3xl rounded-r-xl"} ${!menuClosed ? "w-[80%]" : "w-[100%]"}`} href={"perfil"}>
-
-                <Avatar className="size-12 rounded-full border border-white">
-                  <AvatarImage src={session?.user?.foto} alt="Usuário logado" className="object-cover" />
-                  <AvatarFallback>Imagem</AvatarFallback>
-                </Avatar>
+              <ButtonLink className={`p-3 h-[45px] justify-center flex items-center gap-2 ${!menuClosed && "bg-blue-600 rounded-l-1xl rounded-l-1xl"} ${!menuClosed ? "w-[80%]" : "w-[100%]"}`} href={"perfil"}>
 
                 {!menuClosed && (
                   <p className="text-white text-sm text-wrap line-clamp-1">
-                    {session ? session?.user?.nome ?? "Não informado" : "Carregando..."}
+                    {session ? session?.user?.usuario?.nome ?? "Sean" : "Carregando..."}
                   </p>
                 )}
 

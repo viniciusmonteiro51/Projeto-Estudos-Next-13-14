@@ -13,18 +13,15 @@ export default function DataTableUsuarios({dados, searchParams}) {
                 <Table className="mt-2">
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Nome</TableHead>
-                            <TableHead>E-mail</TableHead>
-                            <TableHead>CPF</TableHead>
-                            <TableHead>Metas</TableHead>
-                            <TableHead>Ações</TableHead>
+                            <TableHead>Descrição</TableHead>
+                            <TableHead>Data</TableHead>
+                            <TableHead>Valor</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableRow>
-                        <TableCell>Nome</TableCell>
-                        <TableCell>E-mail</TableCell>
-                        <TableCell>CPF</TableCell>
-                        <TableCell>Metas</TableCell>
+                        <TableCell>Dinheiro com destino</TableCell>
+                        <TableCell>20/12/2024</TableCell>
+                        <TableCell>R$100.000.000,00</TableCell>
                     </TableRow>
                 </Table>
             </section>

@@ -64,16 +64,29 @@ export default function LoginPage() {
   return (
     <div className="flex h-screen w-screen flex-col md:flex-row">
 
-      <div className="relative w-full h-1/2 md:h-full md:w-1/2">
-        <Image src="/ocean.jpg" layout="fill" objectFit="cover" alt="Homepage Image" />
+      <div className="relative w-full h-1/2 md:h-full md:w-1/2 hidden md:block">
+      <Image
+        src="/oceanhomepage.jpg"
+        layout="fill"
+        objectPosition="center center"
+        objectFit="cover"
+        alt="Homepage Image"
+        className="shadow-2xl shadow-black"
+      />
       </div>
 
-      <div className="w-full h-1/2 flex items-center justify-center bg-sky-800 md:w-1/2 md:h-full">
-
-        <div className="w-4/5 bg-[#fefefe] shadow-md border rounded-md p-8 md:w-2/5">
-
+      <div className="w-full h-1/2 flex items-center justify-start flex-col md:w-1/2 md:h-full ">
+          <Image
+            src="/Ocean.svg"
+            width={500}
+            height={500}
+            alt="Homepage Image"
+            className="pb-36"
+          />
+        <div className="w-4/5 bg-[#fefefe] rounded-md md:w-2/5">
+          
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(login)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(login)} className="space-y-7">
               <FormField
                 control={form.control}
                 name="email"
@@ -82,7 +95,7 @@ export default function LoginPage() {
                     <FormLabel htmlFor="email">E-mail</FormLabel>
                     <FormControl>
                       <Input
-                        className="border-black"
+                        className="border-black h-12"
                         placeholder="exemplo@dominio.com" 
                         id="email" 
                         {...field} 
@@ -100,7 +113,7 @@ export default function LoginPage() {
                     <FormLabel htmlFor="senha">Senha</FormLabel>
                     <FormControl>
                       <Input
-                        className="border-black"
+                        className="border-black h-12"
                         type="password"
                         placeholder="********"
                         id="senha"
@@ -113,7 +126,7 @@ export default function LoginPage() {
               />
 
               <div className="flex items-center justify-center">
-                <Button disabled={form.formState.isSubmitting} className={"mt-4, w-2/4 bg-sky-700"} type="submit">
+                <Button disabled={form.formState.isSubmitting} className={"mt-4, w-full h-12 bg-blue-600 my-6"} type="submit">
                   {form.formState.isSubmitting && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
                   {form.formState.isSubmitting ? "Aguarde" : "Entrar"}
                 </Button>

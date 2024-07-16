@@ -36,17 +36,17 @@ const nextAuthOptions = {
     callbacks: {
         async jwt({ token, user }) {
             // Adiciona o usuário ao token JWT
+            //console.log('JWT callback:', token, user);
             if (user) {
                 token.user = user;
-                console.log(token.user)
             }
             return token;
         },
         async session({ session, token }) {
             // Adiciona os dados do usuário à sessão
+            //console.log('Session callback:', session, token);
             if (token) {
                 session.user = token.user;
-                console.log(session.user)
             }
             return session;
         }
